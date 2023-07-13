@@ -2,18 +2,19 @@ import { Controller, Get,Post,Put,Delete,Param, Body ,ParseIntPipe,ParseUUIDPipe
 import { data ,ReportType} from "./data";
 import {v4 as uuid} from 'uuid';
 import { AppService } from "./app.service";
-import { createReportDto, updateReportDto } from "./dtos/report.dto";
+import { createReportDto, reportReponseDto, updateReportDto } from "./dtos/report.dto";
+
 @Controller('report/:type')
 export class AppController{
  constructor(private appService:AppService){}
   @Get()
-  getAllIncomeReport(@Param('type') type:string){
+  getAllIncomeReport(@Param('type') type:string): reportReponseDto[]{
     const reportType = type==='income'? ReportType.Income : ReportType.Expense;
       return this.appService.getAllReports(reportType);
     //  return [];
   }
   @Get('/:id')
-  getIncomeReportById( @Param('type' ,new ParseEnumPipe(ReportType)) type: string, @Param('id',ParseUUIDPipe) id:string){
+  getIncomeReportById( @Param('type' ,new ParseEnumPipe(ReportType)) type: string, @Param('id',ParseUUIDPipe) id:string) : reportReponseDto {
      const reportType = type==='income'? ReportType.Income : ReportType.Expense;
     return this.appService.getReportById(reportType,id)
   }
